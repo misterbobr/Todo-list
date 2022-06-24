@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::post('/add', [ListController::class, 'Add']);
+Route::get('/getData', [ListController::class, 'getData'])->name('getData');
+
+Route::post('/add', [ListController::class, 'addNote']);
+Route::post('/remove', [ListController::class, 'removeNote']);
 
 //Route::post('/add', 'App\Http\Controllers\ListController@Add');

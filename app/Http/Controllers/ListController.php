@@ -8,10 +8,22 @@ use App\Models\Note;
 
 class ListController extends Controller
 {
-    public function Add(TodoListRequest $req)
+    public function addNote(TodoListRequest $req)
     {
         //$text = $req->input('text');
-        return response()->json(["text" => Note::add($req->input("text"))->todo_list]);
+        return response()->json(["text" => Note::add($req->text)->text]);
         //return redirect()->route('');
+    }
+
+    public function removeNote(Request $req)
+    {
+        //$text = $req->input('text');
+        return response()->json(["text" => Note::remove($req->id)]);
+        //return redirect()->route('');
+    }
+
+    public function getData()
+    {
+        return response()->json(["data" => Note::fetchFromDB()]);
     }
 }

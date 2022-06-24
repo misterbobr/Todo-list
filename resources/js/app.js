@@ -1,8 +1,42 @@
 import './bootstrap';
 
-async function addItem(list) {
-    let text = item.value;
-    console.log(text);
+function createNote(list, note) {
+    if (!document.getElementById(`note${note.id}`)) {
+        let div = document.createElement("div");
+        let delButton = document.createElement("img");
+        delButton.src = "/image/erase.png";
+        delButton.width = 40;
+        delButton.height = 40;
+        delButton.className = "delButton";
+        delButton.onclick = function() {
+            removeItem(note.id);
+            div.remove();
+        }
+        div.className = "listItem";
+        div.innerHTML = note.text;
+        div.id = `note${note.id}`;
+        div.appendChild(delButton);
+        list.appendChild(div);
+    }
+}
+
+async function show(list) {
+    let response = await fetch(`${window.origin}/getData`, {
+        method: "GET"
+    }).then((res) => {
+        return res.json();
+    }).then((data) => {
+        return data['data'];
+    });
+
+    response.forEach(note => {
+        //console.log(note);
+        createNote(list, note);
+    });
+}
+
+async function addItem() {
+    let text = input.value;
 
     let response = await fetch(`${window.origin}/add`, {
         method: "POST",
@@ -14,56 +48,44 @@ async function addItem(list) {
         body: JSON.stringify({
             text: `${text}`
             })
+        }).then((res) => {
+            return res.json();
+        })
+
+    input.value = '';
+    console.log(`Added note: ${response.text}`);
+    show(list);
+    return response;
+}
+
+async function removeItem(id) {
+    let response = await fetch(`${window.origin}/remove`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        body: JSON.stringify({
+            id: `${id}`
+            })
+        }).then((res) => {
+            return res.json();
         });
-        response = await response.json();
 
-        //if(text.length > 0){
-        let div = document.createElement("div");
-        let delButton = document.createElement("img");
-        delButton.src = "/image/erase.png"
-        delButton.width = 40;
-        delButton.height = 40;
-        delButton.className = "delButton";
-        delButton.innerHTML = "del";
-        delButton.onclick = function() {
-            div.remove();
-        }
-        div.className = "listItem";
-        div.innerHTML = text;
-        div.appendChild(delButton);
-        list.appendChild(div);
-        item.value = '';
-        return response;
-        //}
+    console.log(`Removed note: ${response.text}`);
+    return response;
 }
 
-async function show(list) {
-    let response = await fetch(`${window.origin}`, {
-        method: "GET"
-    })
-
-    console.log(response);
-    //let div = document.createElement("div");
-    //let delButton = document.createElement("img");
-    //delButton.src = "assets/icon/erase.png"
-    //delButton.width = 40;
-    //delButton.height = 40;
-    //delButton.className = "delButton";
-    //delButton.innerHTML = "del";
-    //delButton.onclick = function() {
-    //    div.remove();
-    //}
-    //div.className = "listItem";
-    //div.innerHTML = input.value;
-    //div.appendChild(delButton);
-    //list.appendChild(div);
-}
+//document.addEventListener("DOMContentLoaded", function(event) {
+//    
+//});
 
 var list = document.getElementById("list");
 var btn = document.getElementById("addButton");
-var item = document.getElementById("content");
+var input = document.getElementById("content");
+show(list);
 
 btn.onclick = function() {
     addItem(list);
-    show(list);
 }

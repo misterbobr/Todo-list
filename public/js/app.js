@@ -2175,41 +2175,78 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-function addItem(_x) {
-  return _addItem.apply(this, arguments);
-} //function addItem(list) {
-//    let input = document.getElementById("content");
-//    if (input.value.length > 0) {
-//        createCookie("db_insert", input.value);
-//        let div = document.createElement("div");
-//        let delButton = document.createElement("img");
-//        delButton.src = "assets/icon/erase.png"
-//        delButton.width = 40;
-//        delButton.height = 40;
-//        delButton.className = "delButton";
-//        delButton.innerHTML = "del";
-//        delButton.onclick = function() {
-//            div.remove();
-//        }
-//        div.className = "listItem";
-//        div.innerHTML = input.value;
-//        div.appendChild(delButton);
-//        list.appendChild(div);
-//        input.value = '';
-//    }
-//}
+function createNote(list, note) {
+  if (!document.getElementById("note".concat(note.id))) {
+    var div = document.createElement("div");
+    var delButton = document.createElement("img");
+    delButton.src = "/image/erase.png";
+    delButton.width = 40;
+    delButton.height = 40;
+    delButton.className = "delButton";
 
+    delButton.onclick = function () {
+      removeItem(note.id);
+      div.remove();
+    };
 
-function _addItem() {
-  _addItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(list) {
-    var input, response, div, delButton;
+    div.className = "listItem";
+    div.innerHTML = note.text;
+    div.id = "note".concat(note.id);
+    div.appendChild(delButton);
+    list.appendChild(div);
+  }
+}
+
+function show(_x) {
+  return _show.apply(this, arguments);
+}
+
+function _show() {
+  _show = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(list) {
+    var response;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            input = item.value;
-            console.log(input);
-            _context.next = 4;
+            _context.next = 2;
+            return fetch("".concat(window.origin, "/getData"), {
+              method: "GET"
+            }).then(function (res) {
+              return res.json();
+            }).then(function (data) {
+              return data['data'];
+            });
+
+          case 2:
+            response = _context.sent;
+            response.forEach(function (note) {
+              //console.log(note);
+              createNote(list, note);
+            });
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _show.apply(this, arguments);
+}
+
+function addItem() {
+  return _addItem.apply(this, arguments);
+}
+
+function _addItem() {
+  _addItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+    var text, response;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            text = input.value;
+            _context2.next = 3;
             return fetch("".concat(window.origin, "/add"), {
               method: "POST",
               headers: {
@@ -2218,49 +2255,77 @@ function _addItem() {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
               },
               body: JSON.stringify({
-                text: "".concat(input)
+                text: "".concat(text)
               })
+            }).then(function (res) {
+              return res.json();
             });
 
-          case 4:
-            response = _context.sent;
-            _context.next = 7;
-            return response.json();
+          case 3:
+            response = _context2.sent;
+            input.value = '';
+            console.log("Added note: ".concat(response.text));
+            show(list);
+            return _context2.abrupt("return", response);
 
-          case 7:
-            response = _context.sent;
-            div = document.createElement("div");
-            delButton = document.createElement("img");
-            delButton.src = "/image/erase.png";
-            delButton.width = 40;
-            delButton.height = 40;
-            delButton.className = "delButton";
-            delButton.innerHTML = "del";
-
-            delButton.onclick = function () {
-              div.remove();
-            };
-
-            div.className = "listItem";
-            div.innerHTML = input;
-            div.appendChild(delButton);
-            list.appendChild(div);
-            item.value = '';
-            return _context.abrupt("return", response);
-
-          case 22:
+          case 8:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee);
+    }, _callee2);
   }));
   return _addItem.apply(this, arguments);
 }
 
+function removeItem(_x2) {
+  return _removeItem.apply(this, arguments);
+} //document.addEventListener("DOMContentLoaded", function(event) {
+//    
+//});
+
+
+function _removeItem() {
+  _removeItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(id) {
+    var response;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return fetch("".concat(window.origin, "/remove"), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({
+                id: "".concat(id)
+              })
+            }).then(function (res) {
+              return res.json();
+            });
+
+          case 2:
+            response = _context3.sent;
+            console.log("Removed note: ".concat(response.text));
+            return _context3.abrupt("return", response);
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+  return _removeItem.apply(this, arguments);
+}
+
 var list = document.getElementById("list");
 var btn = document.getElementById("addButton");
-var item = document.getElementById("content");
+var input = document.getElementById("content");
+show(list);
 
 btn.onclick = function () {
   addItem(list);

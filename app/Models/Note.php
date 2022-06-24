@@ -16,8 +16,20 @@ class Note extends Model
     {
         $note = new Note();
         $note->text = $text;
-
         $note->save();
         return $note;
+    }
+
+    public static function remove($id)
+    {
+        $note = Note::where('id', $id)->first();
+        $text = $note->text;
+        $note->delete();
+        return $text;
+    }
+
+    public static function fetchFromDB()
+    {
+        return Note::all();
     }
 }
