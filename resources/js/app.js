@@ -1,5 +1,12 @@
 import './bootstrap';
 
+function toggleDropdown(dropdown) {
+    if (dropdown.style.display === "none")
+        dropdown.style.display = "block";
+    else
+        dropdown.style.display = "none";
+}
+
 function createNote(list, note) {
     if (!document.getElementById(`note${note.id}`)) {
         let div = document.createElement("div");
@@ -81,11 +88,18 @@ async function removeItem(id) {
 //    
 //});
 
-var list = document.getElementById("list");
-var btn = document.getElementById("addButton");
-var input = document.getElementById("content");
+const list = document.getElementById("list");
+const addButton = document.getElementById("addButton");
+const input = document.getElementById("content");
+const loginButton = document.getElementById("login-button");
+const dropdown = document.querySelector(".dropdown-menu");
+
 show(list);
 
-btn.onclick = function() {
+addButton.onclick = function() {
     addItem(list);
+}
+
+loginButton.onclick = function() {
+    toggleDropdown(dropdown);
 }

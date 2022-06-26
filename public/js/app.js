@@ -2175,6 +2175,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+function toggleDropdown(dropdown) {
+  if (dropdown.style.display === "none") dropdown.style.display = "block";else dropdown.style.display = "none";
+}
+
 function createNote(list, note) {
   if (!document.getElementById("note".concat(note.id))) {
     var div = document.createElement("div");
@@ -2323,12 +2327,18 @@ function _removeItem() {
 }
 
 var list = document.getElementById("list");
-var btn = document.getElementById("addButton");
+var addButton = document.getElementById("addButton");
 var input = document.getElementById("content");
+var loginButton = document.getElementById("login-button");
+var dropdown = document.querySelector(".dropdown-menu");
 show(list);
 
-btn.onclick = function () {
+addButton.onclick = function () {
   addItem(list);
+};
+
+loginButton.onclick = function () {
+  toggleDropdown(dropdown);
 };
 
 /***/ }),

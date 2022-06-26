@@ -41,7 +41,7 @@ h1 {
 	z-index: 2;
 }
 
-input[type="text"] {
+.content {
 	width: 80%;
 	height: 30px;
 	margin: 5px 5px;
@@ -65,27 +65,15 @@ input[type="text"] {
 }
 
 .add:hover {
-	width: 15%;
-	height: 35px;
-	font-size: 20px;
-	font-family: 'Raleway', sans-serif;
-	font-weight: 600;
 	background-color: #00000099;
 	color: #ffffff;
 	border-style: inset;
-	border-color: #c0c0c0;
 }
 
 .add:active {
-	width: 15%;
-	height: 35px;
-	font-size: 20px;
-	font-family: 'Raleway', sans-serif;
-	font-weight: 600;
 	background-color: #000000bb;
 	color: #ffffff;
 	border-style: groove;
-	border-color: #c0c0c0;
 }
 
 .todoList {

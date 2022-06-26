@@ -14,16 +14,14 @@
 		<!--<h1>Some text</h1>-->
 		<main>
 			<div class='background'></div>
-			<div class='content'>
-				<div class="inputSection" id="input">
-					<input type="text" id="content" placeholder="Your note here">
-					<button class="add" id="addButton">Add</button>
-					<!--<input type="submit" class="add" id="addButton" name="db_insert" value="Add">-->
-				</div>
-				<!--<div>
-					<ul id="list"></ul>-->
-				<div class="todoList" id="list"></div>
+			<div class="inputSection" id="input">
+				<input type="text" class="content" id="content" placeholder="Your note here">
+				<button class="add" id="addButton">Add</button>
+				<!--<input type="submit" class="add" id="addButton" name="db_insert" value="Add">-->
 			</div>
+			<!--<div>
+				<ul id="list"></ul>-->
+			<div class="todoList" id="list"></div>
 			<script src="/js/app.js"></script>
 		</main>
 	</body>
