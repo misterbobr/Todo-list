@@ -1,7 +1,21 @@
-body {
+.background {
 	background-image: url("/image/todolist.jpg");
+	background-size: cover;
+	display: block;
+	filter: blur(4px);
+	height: 100%;
+	left: 0;
+	position: fixed;
+	right: 0;
+	z-index: 1;
+}
+
+body {
 	background-color: transparent;
-	margin: 50px 67px 0px 945px;
+	margin: 0;
+}
+
+main {
 	color: #9015bc;
 	font-family: 'Raleway', sans-serif;
 	font-size: 30px;
@@ -20,9 +34,11 @@ h1 {
 .inputSection {
 	font-family: 'Raleway', sans-serif;
 	font-size: auto;
-	margin: 240px auto auto 200px;
-	width: 60%;
+	margin: 250px 0 0 1145px;
+	width: 30%;
 	padding: auto;
+	position: fixed;
+	z-index: 2;
 }
 
 input[type="text"] {
