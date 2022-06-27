@@ -63,3 +63,15 @@
 	border-style: outset;
 	border-color: #c0c0c0;
 }
+
+.login-submit:hover {
+	background-color: #00000099;
+	color: #ffffff;
+	border-style: inset;
+}
+
+.login-submit:active {
+	background-color: #000000bb;
+	color: #ffffff;
+	border-style: groove;
+}

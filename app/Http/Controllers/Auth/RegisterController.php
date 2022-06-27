@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -41,6 +42,11 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function register_(Request $req)
+    {
+        $this->register($req);
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -50,9 +56,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'login' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'confirmed'],
         ]);
     }
 
@@ -65,8 +70,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'login' => $data['login'],
             'password' => Hash::make($data['password']),
         ]);
     }

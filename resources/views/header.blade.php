@@ -5,8 +5,9 @@
     <button type="button" class="login" id="login-button">Log in</button>
     <div class="dropdown-menu">
       <form action="/login" method="post">
-        <input class="login-input" type="text" placeholder="Login"><br>
-        <input class="login-input" type="password" placeholder="Password"><br>
+        @csrf
+        <input class="login-input" type="text" name="login" placeholder="Login"><br>
+        <input class="login-input" type="password" name="password" placeholder="Password"><br>
         <input class="login-submit" type="submit" value="Log in"/>
       </form>
     </div>
