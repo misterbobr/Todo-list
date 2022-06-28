@@ -2176,14 +2176,46 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 function toggleDropdown(dropdown) {
-  if (dropdown.style.display === "none") dropdown.style.display = "block";else dropdown.style.display = "none";
+  if (dropdown.style.display === "") dropdown.style.display = "block";else dropdown.style.display = "";
+}
+
+function isLogged() {
+  return _isLogged.apply(this, arguments);
+}
+
+function _isLogged() {
+  _isLogged = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+    var response;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return fetch("".concat(window.origin, "/isLogged"), {
+              method: "GET"
+            }).then(function (res) {
+              return res.json();
+            });
+
+          case 2:
+            response = _context.sent;
+            console.log(response);
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _isLogged.apply(this, arguments);
 }
 
 function createNote(list, note) {
   if (!document.getElementById("note".concat(note.id))) {
     var div = document.createElement("div");
     var delButton = document.createElement("img");
-    delButton.src = "/image/erase.png";
+    delButton.src = "/images/erase.png";
     delButton.width = 40;
     delButton.height = 40;
     delButton.className = "delButton";
@@ -2206,13 +2238,13 @@ function show(_x) {
 }
 
 function _show() {
-  _show = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(list) {
+  _show = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(list) {
     var response;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
-            _context.next = 2;
+            _context2.next = 2;
             return fetch("".concat(window.origin, "/getData"), {
               method: "GET"
             }).then(function (res) {
@@ -2222,7 +2254,7 @@ function _show() {
             });
 
           case 2:
-            response = _context.sent;
+            response = _context2.sent;
             response.forEach(function (note) {
               //console.log(note);
               createNote(list, note);
@@ -2230,10 +2262,10 @@ function _show() {
 
           case 4:
           case "end":
-            return _context.stop();
+            return _context2.stop();
         }
       }
-    }, _callee);
+    }, _callee2);
   }));
   return _show.apply(this, arguments);
 }
@@ -2243,14 +2275,14 @@ function addItem() {
 }
 
 function _addItem() {
-  _addItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+  _addItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var text, response;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
             text = input.value;
-            _context2.next = 3;
+            _context3.next = 3;
             return fetch("".concat(window.origin, "/add"), {
               method: "POST",
               headers: {
@@ -2266,18 +2298,18 @@ function _addItem() {
             });
 
           case 3:
-            response = _context2.sent;
+            response = _context3.sent;
             input.value = '';
             console.log("Added note: ".concat(response.text));
             show(list);
-            return _context2.abrupt("return", response);
+            return _context3.abrupt("return", response);
 
           case 8:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _addItem.apply(this, arguments);
 }
@@ -2290,13 +2322,13 @@ function removeItem(_x2) {
 
 
 function _removeItem() {
-  _removeItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(id) {
+  _removeItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(id) {
     var response;
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context3.next = 2;
+            _context4.next = 2;
             return fetch("".concat(window.origin, "/remove"), {
               method: "POST",
               headers: {
@@ -2312,16 +2344,16 @@ function _removeItem() {
             });
 
           case 2:
-            response = _context3.sent;
+            response = _context4.sent;
             console.log("Removed note: ".concat(response.text));
-            return _context3.abrupt("return", response);
+            return _context4.abrupt("return", response);
 
           case 5:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _removeItem.apply(this, arguments);
 }
@@ -2334,12 +2366,33 @@ var dropdown = document.querySelector(".dropdown-menu");
 show(list);
 
 addButton.onclick = function () {
-  addItem(list);
+  //addItem(list);
+  isLogged();
 };
 
 loginButton.onclick = function () {
   toggleDropdown(dropdown);
-};
+}; //const login = document.getElementById("login");
+//const login = document.getElementById("login");
+//const login = document.getElementById("login");
+//
+//login.onclick = function() {
+//    let response = await fetch(`${window.origin}/login`, {
+//        method: "POST",
+//        headers: {
+//            "Content-Type": "application/json",
+//            "Accept": "application/json",
+//            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+//            },
+//        body: JSON.stringify({
+//            login: `${}`,
+//            password: `${}`
+//            })
+//        }).then((res) => {
+//            return res.json();
+//        })
+//    return response;
+//}
 
 /***/ }),
 

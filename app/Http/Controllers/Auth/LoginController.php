@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
@@ -24,16 +24,27 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    public function test(Request $req) {
-        return response()->json(["login" => $req->login, "password" => Hash::make($req->password)]);
-    }
-
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
+
+    public function username()
+    {
+        return 'login';
+    }
+
+    public function login_(Request $req)
+    {
+        return $this->login($req);
+    }
+
+    public function logout_(Request $req)
+    {
+        return $this->logout($req);
+    }
 
     /**
      * Create a new controller instance.

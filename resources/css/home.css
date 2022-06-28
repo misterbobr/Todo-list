@@ -1,5 +1,5 @@
 .background {
-	background-image: url("/image/todolist.jpg");
+	background-image: url("/images/todolist.jpg");
 	background-size: cover;
 	display: block;
 	filter: blur(4px);
@@ -32,19 +32,22 @@ h1 {
 }
 
 .inputSection {
+	position: absolute;
+	right: 10%;
+	top: 35%;
+	width: 35%;
 	font-family: 'Raleway', sans-serif;
 	font-size: auto;
-	margin: 250px 0 0 1145px;
-	width: 30%;
 	padding: auto;
-	position: fixed;
 	z-index: 2;
 }
 
 .content {
+	position: relative;
+	left: 3%;
+	top: 5px;
 	width: 80%;
 	height: 30px;
-	margin: 5px 5px;
 	font-size: 24px;
 	font-family: 'Raleway', sans-serif;
 	font-weight: 400;
@@ -53,7 +56,10 @@ h1 {
 }
 
 .add {
-	width: 15%;
+	position: relative;
+	left: 4%;
+	top: 3px;
+	width: 12%;
 	height: 35px;
 	font-size: 20px;
 	font-family: 'Raleway', sans-serif;
@@ -77,18 +83,20 @@ h1 {
 }
 
 .todoList {
-	margin: auto;
-	width: 75%;
+	position: relative;
+	top: 3%;
+	width: 100%;
 	overflow-wrap: break-word;
 }
 
 .listItem {
 	position: relative;
-	color: black;
 	font-size: 28px;
 	font-weight: 400;
 	margin: 15px auto;
 	padding: 7px;
+	width: 560px;
+	color: black;
 	background-color: #8DD7E260;
 	border-style: solid;
 	border-width: 2px;
@@ -96,9 +104,14 @@ h1 {
 	border-radius: 7px;
 }
 
+.editButton {
+	position: relative;
+	top: 50%;
+	left: 10px;
+}
+
 .delButton {
 	position: absolute;
 	top: 50%;
-	right: 2%;
-	transform: translateY(-50%);
+	right: 10px;
 }

@@ -44,7 +44,7 @@ class RegisterController extends Controller
 
     public function register_(Request $req)
     {
-        $this->register($req);
+        return $this->register($req);
     }
 
     /**
