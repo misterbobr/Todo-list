@@ -13,30 +13,35 @@ async function isLogged() {
     }).then((res) => {
         return res.json();
     });
+    response = await response['result'];
     return response;
 }
 
-function createNote(list, note) {
+function createNote(list, note, logged) {
     if (!document.getElementById(`note${note.id}`)) {
         let div = document.createElement("div"); // Создаем заметку
-        div.className = "listItem";
-        div.innerHTML = note.text;
-        div.id = `note${note.id}`;
-        div.onblur = function() {
-
+        let p = document.createElement("p");
+        p.innerHTML = note.text;
+        p.className = "listItemText";
+        p.onblur = function() {
+            editItem(p);
         }
-        if (isLogged()){ // Если залогинены, то отображать кнопку редактирования
+        div.appendChild(p);
+        div.className = "listItem";
+        div.id = `note${note.id}`;
+        if (logged){ // Если залогинены, то отображать кнопку редактирования
             let editButton = document.createElement("img");
             editButton.src = "/images/edit.png";
             editButton.width = 40;
             editButton.height = 40;
             editButton.className = "editButton";
-            editButton.onclick = function() { // 
-                if (note.contentEditable !== 'true')
-                    note.contentEditable = 'true';
+            editButton.onclick = function() { // вкл/выкл редактирование 
+                if (p.contentEditable !== 'true')
+                    p.contentEditable = 'true';
                 else
-                    note.contentEditable = 'false';
+                    p.contentEditable = 'false';
             }
+            div.appendChild(editButton);
         }
         let delButton = document.createElement("img"); // Кнопка удаления
         delButton.src = "/images/erase.png";
@@ -61,9 +66,10 @@ async function show(list) {
         return data['data'];
     });
 
+    let logged = await isLogged();
     response.forEach(note => {
         //console.log(note);
-        createNote(list, note);
+        createNote(list, note, logged);
     });
 }
 
@@ -87,6 +93,29 @@ async function addItem() {
     input.value = '';
     console.log(`Added note: ${response.text}`);
     show(list);
+    return response;
+}
+
+async function editItem(item) {
+    let text = item.innerHTML;
+    let id = item.parentElement.id.match(/\d+/);
+
+    let response = await fetch(`${window.origin}/edit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        body: JSON.stringify({
+            id: `${id}`,
+            text: `${text}`
+            })
+        });
+
+    response = await response.json();
+
+    console.log(`Edited note to: ${response.text}`);
     return response;
 }
 
@@ -122,8 +151,7 @@ const dropdown = document.querySelector(".dropdown-menu");
 show(list);
 
 addButton.onclick = function() {
-    //addItem(list);
-    isLogged();
+    addItem(list);
 }
 
 loginButton.onclick = function() {

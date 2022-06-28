@@ -2199,9 +2199,14 @@ function _isLogged() {
 
           case 2:
             response = _context.sent;
-            console.log(response);
+            _context.next = 5;
+            return response['result'];
 
-          case 4:
+          case 5:
+            response = _context.sent;
+            return _context.abrupt("return", response);
+
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -2211,23 +2216,51 @@ function _isLogged() {
   return _isLogged.apply(this, arguments);
 }
 
-function createNote(list, note) {
+function createNote(list, note, logged) {
   if (!document.getElementById("note".concat(note.id))) {
-    var div = document.createElement("div");
-    var delButton = document.createElement("img");
+    var div = document.createElement("div"); // Создаем заметку
+
+    var p = document.createElement("p");
+    p.innerHTML = note.text;
+    p.className = "listItemText";
+
+    p.onblur = function () {
+      editItem(p);
+    };
+
+    div.appendChild(p);
+    div.className = "listItem";
+    div.id = "note".concat(note.id);
+
+    if (logged) {
+      // Если залогинены, то отображать кнопку редактирования
+      var editButton = document.createElement("img");
+      editButton.src = "/images/edit.png";
+      editButton.width = 40;
+      editButton.height = 40;
+      editButton.className = "editButton";
+
+      editButton.onclick = function () {
+        // вкл/выкл редактирование 
+        if (p.contentEditable !== 'true') p.contentEditable = 'true';else p.contentEditable = 'false';
+      };
+
+      div.appendChild(editButton);
+    }
+
+    var delButton = document.createElement("img"); // Кнопка удаления
+
     delButton.src = "/images/erase.png";
     delButton.width = 40;
     delButton.height = 40;
     delButton.className = "delButton";
 
     delButton.onclick = function () {
+      // удаляет элемент по нажатию
       removeItem(note.id);
       div.remove();
     };
 
-    div.className = "listItem";
-    div.innerHTML = note.text;
-    div.id = "note".concat(note.id);
     div.appendChild(delButton);
     list.appendChild(div);
   }
@@ -2239,7 +2272,7 @@ function show(_x) {
 
 function _show() {
   _show = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(list) {
-    var response;
+    var response, logged;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -2255,12 +2288,17 @@ function _show() {
 
           case 2:
             response = _context2.sent;
+            _context2.next = 5;
+            return isLogged();
+
+          case 5:
+            logged = _context2.sent;
             response.forEach(function (note) {
               //console.log(note);
-              createNote(list, note);
+              createNote(list, note, logged);
             });
 
-          case 4:
+          case 7:
           case "end":
             return _context2.stop();
         }
@@ -2314,7 +2352,54 @@ function _addItem() {
   return _addItem.apply(this, arguments);
 }
 
-function removeItem(_x2) {
+function editItem(_x2) {
+  return _editItem.apply(this, arguments);
+}
+
+function _editItem() {
+  _editItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(item) {
+    var text, id, response;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            text = item.innerHTML;
+            id = item.parentElement.id.match(/\d+/);
+            _context4.next = 4;
+            return fetch("".concat(window.origin, "/edit"), {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({
+                id: "".concat(id),
+                text: "".concat(text)
+              })
+            });
+
+          case 4:
+            response = _context4.sent;
+            _context4.next = 7;
+            return response.json();
+
+          case 7:
+            response = _context4.sent;
+            console.log("Edited note to: ".concat(response.text));
+            return _context4.abrupt("return", response);
+
+          case 10:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+  return _editItem.apply(this, arguments);
+}
+
+function removeItem(_x3) {
   return _removeItem.apply(this, arguments);
 } //document.addEventListener("DOMContentLoaded", function(event) {
 //    
@@ -2322,13 +2407,13 @@ function removeItem(_x2) {
 
 
 function _removeItem() {
-  _removeItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(id) {
+  _removeItem = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(id) {
     var response;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context4.next = 2;
+            _context5.next = 2;
             return fetch("".concat(window.origin, "/remove"), {
               method: "POST",
               headers: {
@@ -2344,16 +2429,16 @@ function _removeItem() {
             });
 
           case 2:
-            response = _context4.sent;
+            response = _context5.sent;
             console.log("Removed note: ".concat(response.text));
-            return _context4.abrupt("return", response);
+            return _context5.abrupt("return", response);
 
           case 5:
           case "end":
-            return _context4.stop();
+            return _context5.stop();
         }
       }
-    }, _callee4);
+    }, _callee5);
   }));
   return _removeItem.apply(this, arguments);
 }
@@ -2366,8 +2451,7 @@ var dropdown = document.querySelector(".dropdown-menu");
 show(list);
 
 addButton.onclick = function () {
-  //addItem(list);
-  isLogged();
+  addItem(list);
 };
 
 loginButton.onclick = function () {

@@ -20,6 +20,14 @@ class Note extends Model
         return $note;
     }
 
+    public static function edit($id, $text)
+    {
+        $note = Note::where('id', $id)->first();
+        $note->text = $text;
+        $note->save();
+        return $note;
+    }
+
     public static function remove($id)
     {
         $note = Note::where('id', $id)->first();

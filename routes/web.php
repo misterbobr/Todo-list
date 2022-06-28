@@ -16,7 +16,7 @@ Route::get('/register', function () {
     return view('register');
 });
 Route::get('/isLogged', function() {
-    return Auth::check();
+    return response()->json(["result" => Auth::check()]);
 });
 
 Route::get('/getData', [ListController::class, 'getData'])->name('getData');
@@ -26,6 +26,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [RegisterController::class, 'register_'])->name('register');
 
 Route::post('/add', [ListController::class, 'addNote']);
+Route::post('/edit', [ListController::class, 'editNote']);
 Route::post('/remove', [ListController::class, 'removeNote']);
 
 //Route::post('/add', 'App\Http\Controllers\ListController@Add');

@@ -15,6 +15,13 @@ class ListController extends Controller
         //return redirect()->route('');
     }
 
+    public function editNote(TodoListRequest $req)
+    {
+        //$text = $req->input('text');
+        return response()->json(["text" => Note::edit($req->id, $req->text)->text]);
+        //return redirect()->route('');
+    }
+
     public function removeNote(Request $req)
     {
         //$text = $req->input('text');
